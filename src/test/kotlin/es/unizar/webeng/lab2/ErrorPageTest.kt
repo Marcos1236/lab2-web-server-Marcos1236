@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ErrorPageTest {
-
     @LocalServerPort
     private var port: Int = 0
 
@@ -25,14 +24,15 @@ class ErrorPageTest {
         val headers = org.springframework.http.HttpHeaders()
         headers.set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
         val entity = org.springframework.http.HttpEntity<String>(headers)
-        
-        val response = restTemplate.exchange(
-            "http://localhost:$port/ruta-que-no-existe",
-            org.springframework.http.HttpMethod.GET,
-            entity,
-            String::class.java
-        )
-        
+
+        val response =
+            restTemplate.exchange(
+                "http://localhost:$port/ruta-que-no-existe",
+                org.springframework.http.HttpMethod.GET,
+                entity,
+                String::class.java,
+            )
+
         assertThat(response.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
         assertThat(response.headers.contentType?.toString()).contains("text/html")
         assertThat(response.body).contains("404")

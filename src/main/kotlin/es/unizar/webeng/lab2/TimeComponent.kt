@@ -1,27 +1,27 @@
 package es.unizar.webeng.lab2
 
+import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @RestController
-class TimeController(private val service: TimeProvider) {
-
+class TimeController(
+    private val service: TimeProvider,
+) {
     @GetMapping("/time")
     fun time(): TimeDTO = service.now().toDTO()
 }
 
-
-data class TimeDTO(val time: LocalDateTime)
+data class TimeDTO(
+    val time: LocalDateTime,
+)
 
 fun LocalDateTime.toDTO(): TimeDTO = TimeDTO(time = this)
-
 
 interface TimeProvider {
     fun now(): LocalDateTime
 }
-
 
 @Service
 class TimeService : TimeProvider {
